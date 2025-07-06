@@ -105,15 +105,18 @@ int main(void)
   while (1)
   {
 
-	  int16_t shunt_mv = INA219_ReadShuntVoltage(&hi2c1);
-	 uint16_t bus_mv = INA219_ReadBusVoltage(&hi2c1);
-	 int16_t current_ma = INA219_ReadCurrent(&hi2c1);
+	  // Read values
+	  float shunt_mv = INA219_ReadShuntVoltage(&hi2c1);
+	  uint16_t bus_mv = INA219_ReadBusVoltage(&hi2c1);
+	  float current_ma = INA219_ReadCurrent(&hi2c1);
 
-	 snprintf(msg, sizeof(msg), "Bus: %lumV, Shunt: %dmV, Current: %dmA\r\n",
-	                   (unsigned long)bus_mv, shunt_mv, current_ma);
+	  // Format and send
+	  snprintf(msg, sizeof(msg),
+	           "Bus: %lumV, Shunt: %.2fmV, Current: %.2fmA\r\n",
+	           (unsigned long)bus_mv, shunt_mv, current_ma);
 
-        HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
-	          HAL_Delay(1000);
+	  HAL_UART_Transmit(&huart2, (uint8_t*)msg, strlen(msg), HAL_MAX_DELAY);
+	  HAL_Delay(1000);
     /* USER CODE END WHILE */
 
     /* USER CODE BEGIN 3 */

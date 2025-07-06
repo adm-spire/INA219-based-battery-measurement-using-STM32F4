@@ -12,8 +12,9 @@
 #define INA219_REG_POWER 0x03
 
 void INA219_Init(I2C_HandleTypeDef *hi2c);
-int16_t INA219_ReadShuntVoltage(I2C_HandleTypeDef *hi2c);
+float INA219_ReadShuntVoltage(I2C_HandleTypeDef *hi2c);
 uint16_t INA219_ReadBusVoltage(I2C_HandleTypeDef *hi2c);
-int16_t INA219_ReadCurrent(I2C_HandleTypeDef *hi2c);
+float INA219_ReadCurrent(I2C_HandleTypeDef *hi2c);
+float INA219_ReadPower(I2C_HandleTypeDef *hi2c);
 
 #endif

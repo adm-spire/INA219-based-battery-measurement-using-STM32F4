@@ -23,8 +23,9 @@ void INA219_Init(I2C_HandleTypeDef *hi2c){
 	    INA219_WriteRegister(hi2c, INA219_REG_CALIBRATION, 4096);
 }
 
-int16_t INA219_ReadShuntVoltage(I2C_HandleTypeDef *hi2c) {
-    return (int16_t)INA219_ReadRegister(hi2c, INA219_REG_SHUNT_VOLTAGE);
+float INA219_ReadShuntVoltage(I2C_HandleTypeDef *hi2c) {
+    int16_t raw = INA219_ReadRegister(hi2c, INA219_REG_SHUNT_VOLTAGE);
+    return raw * 0.01f; // 10 µV = 0.01 mV
 }
 
 uint16_t INA219_ReadBusVoltage(I2C_HandleTypeDef *hi2c) {
@@ -32,7 +33,13 @@ uint16_t INA219_ReadBusVoltage(I2C_HandleTypeDef *hi2c) {
     return (raw >> 3) * 4;  // in mV
 }
 
-int16_t INA219_ReadCurrent(I2C_HandleTypeDef *hi2c) {
-    return (int16_t)INA219_ReadRegister(hi2c, INA219_REG_CURRENT);
+float INA219_ReadCurrent(I2C_HandleTypeDef *hi2c) {
+    int16_t raw = INA219_ReadRegister(hi2c, INA219_REG_CURRENT);
+    return raw * 0.1f; // Each count = 0.1 mA
 }
+float INA219_ReadPower(I2C_HandleTypeDef *hi2c) {
+    uint16_t raw = INA219_ReadRegister(hi2c, INA219_REG_POWER);
+    return raw * 2.0f; // If Current_LSB = 0.0001 A
+}
+
 
